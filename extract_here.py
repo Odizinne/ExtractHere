@@ -19,23 +19,25 @@ class ExtractionThread(QThread):
 
         self.extraction_complete.emit()
 
-    def extract_archive(self, archive_path):
+    def extract_archive(self, archive_path, extraction_dir=None):
+        if extraction_dir is None:
+            extraction_dir = os.path.splitext(archive_path)[0]
+
+        if not os.path.exists(extraction_dir):
+            os.makedirs(extraction_dir)
+
         try:
             with zipfile.ZipFile(archive_path, 'r') as archive:
                 file_list = archive.namelist()
                 total_files = len(file_list)
-
-                # Emit signal to update status label
                 self.update_status.emit(f"Extracting {os.path.basename(archive_path)}...")
 
-                # Extract each file in the archive
                 for i, file in enumerate(file_list, start=1):
-                    archive.extract(file)
+                    archive.extract(file, extraction_dir)
                     progress = int(i / total_files * 100)
                     self.update_progress.emit(progress)
 
         except Exception as e:
-            # Handle errors and emit signal to update status label
             self.update_status.emit(f"Error extracting {os.path.basename(archive_path)}: {e}")
 
 class ZipExtractorFrame(QFrame):
@@ -44,11 +46,11 @@ class ZipExtractorFrame(QFrame):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle("Exctact here")
-        self.setFixedSize(400, 100)  # Setting a fixed size for the frame
+        self.setWindowTitle("Extract here")
+        self.setFixedSize(400, 100)
 
         self.status_label = QLabel("Waiting to extract files...")
-        self.status_label.setWordWrap(True)  # Enable word wrap to handle long text
+        self.status_label.setWordWrap(True)
         self.progressbar = QProgressBar()
 
         layout = QVBoxLayout()
@@ -60,14 +62,13 @@ class ZipExtractorFrame(QFrame):
         self.thread = ExtractionThread(archive_paths)
         self.thread.update_progress.connect(self.update_progressbar)
         self.thread.update_status.connect(self.update_status_label)
-        self.thread.extraction_complete.connect(QApplication.instance().quit)  # Connect to quit directly
+        self.thread.extraction_complete.connect(QApplication.instance().quit)
         self.thread.start()
 
     def update_progressbar(self, value):
         self.progressbar.setValue(value)
 
     def update_status_label(self, status):
-        # Truncate status text if it's too long
         max_label_width = self.status_label.width()
         font_metrics = self.status_label.fontMetrics()
         elided_text = font_metrics.elidedText(status, Qt.ElideRight, max_label_width)
