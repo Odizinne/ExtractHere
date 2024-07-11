@@ -50,6 +50,7 @@ class ZipExtractorApp(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setFixedSize(self.size())
+        self.setWindowTitle("Extracting...")
         self.init_ui()
 
     def init_ui(self):
