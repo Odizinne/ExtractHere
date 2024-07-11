@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(503, 96)
+        MainWindow.resize(503, 95)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -23,6 +23,7 @@ class Ui_MainWindow(object):
         self.archiveLabel.setObjectName("archiveLabel")
         self.gridLayout.addWidget(self.archiveLabel, 0, 0, 1, 1)
         self.statusLabel = QtWidgets.QLabel(parent=self.centralwidget)
+        self.statusLabel.setMinimumSize(QtCore.QSize(0, 25))
         self.statusLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.statusLabel.setObjectName("statusLabel")
         self.gridLayout.addWidget(self.statusLabel, 0, 1, 1, 1)
@@ -31,9 +32,6 @@ class Ui_MainWindow(object):
         self.extractProgressBar.setProperty("value", 24)
         self.extractProgressBar.setObjectName("extractProgressBar")
         self.gridLayout.addWidget(self.extractProgressBar, 1, 0, 1, 2)
-        self.currentFileLabel = QtWidgets.QLabel(parent=self.centralwidget)
-        self.currentFileLabel.setObjectName("currentFileLabel")
-        self.gridLayout.addWidget(self.currentFileLabel, 2, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -44,4 +42,3 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.archiveLabel.setText(_translate("MainWindow", "TextLabel"))
         self.statusLabel.setText(_translate("MainWindow", "TextLabel"))
-        self.currentFileLabel.setText(_translate("MainWindow", "TextLabel"))
