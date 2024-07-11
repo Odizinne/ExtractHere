@@ -1,9 +1,24 @@
 from cx_Freeze import setup, Executable
 
+build_dir = "build/ExtractHere"
+
+base = "Win32GUI"
+
+target_name="extracthere.exe"
+
+zip_include_packages = ['PyQt6', 'zipfile']
+
 executables = [
-    Executable('extract_here.py', base='Win32GUI')  # Replace 'file.py' with your script name and 'icon.ico' with your icon file
+    Executable('extract_here.py', base=base, target_name=target_name)
 ]
 
-setup(name='Extract herer',
+build_exe_options = {
+    "build_exe": build_dir,
+    "zip_include_packages": zip_include_packages,
+    "excludes": ["tkinter", "PyQt5", "PySide6", "pygetwindow", "PyQt6-WebEngine", "numpy"],
+}
+
+setup(name='ExtractHere',
       version='1.0',
+      options={"build_exe": build_exe_options},
       executables=executables)
