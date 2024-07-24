@@ -83,6 +83,7 @@ class ZipExtractorApp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     window = ZipExtractorApp()
 
     if len(sys.argv) > 1:
